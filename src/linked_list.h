@@ -7,6 +7,7 @@ public:
     Node<T>* head;
 
     linked_list();
+    ~linked_list();
 
     void insert_head(T value);  
     void insert(int position, T value);
@@ -75,6 +76,10 @@ T linked_list<T>::get(int position)
     Node<T>* current = head;
     for (int i = 0; i < position; ++i)
     {
+        if (current == nullptr)
+        {
+            return T();
+        }
         current = current->next_address;
     }
     if (current == nullptr)
@@ -101,7 +106,13 @@ void linked_list<T>::remove(int position)
         current = current->next_address;
     }
 
-    Node<T>* temporary_head = current->next_address;
-    current->next_address = temporary_head->next_address;
-    delete temporary_head;
+    Node<T>* temporary_node = current->next_address;
+    if (temporary_node == nullptr)
+        return;
+
+    current->next_address = temporary_node->next_address;
+    delete temporary_node;
 }
+
+template <typename T>
+linked_list<T>::~linked_list() {}
