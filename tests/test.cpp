@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "/home/artush/main/c++_project/homework/linked_list/src/linked_list.h"
+#include "/home/artush/main/c++ project/homework/linked_list/src/linked_list.h"
 
 TEST(list,head)
 {
@@ -58,4 +58,10 @@ TEST(list, remove)
     list.remove(0); 
 
     EXPECT_EQ(list.get(0), 20);
+}
+
+TEST(list,copy_constructor)
+{
+    linked_list<int> list;
+    linked_list<int> list1(list);
 }
