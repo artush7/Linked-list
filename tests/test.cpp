@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "/home/artush/main/c++ project/homework/linked_list/src/linked_list.h"
+#include "linked_list.h"
 
 TEST(list,head)
 {
@@ -62,6 +62,61 @@ TEST(list, remove)
 
 TEST(list,copy_constructor)
 {
-    linked_list<int> list;
-    linked_list<int> list1(list);
+    linked_list<int> lst;
+    lst.insert_head(5);
+    lst.insert_head(4);
+
+    linked_list<int> lst1(lst);
+
+    EXPECT_EQ(lst1.head->data,4);
+    EXPECT_EQ(lst1.head->next_address->data,5);
+
+    lst.head->data = 999;
+    EXPECT_EQ(lst1.head->data, 4); 
+    
 }
+
+TEST(list,copy_operator)
+{
+    linked_list<int> original;
+    original.insert_head(5);
+
+    linked_list<int> copy;
+
+    copy.insert_head(11);
+    copy.insert_head(10);
+
+    original = copy;
+
+    EXPECT_EQ(original.head->data, 10); 
+
+}
+
+TEST(list,move_constructor)
+{
+    linked_list<int> original;
+    original.insert_head(11);
+    original.insert_head(10);
+
+    linked_list<int> move(std::move(original));
+
+
+    EXPECT_EQ(move.head->data, 10); 
+
+}
+
+TEST(list,move_operator)
+{
+    linked_list<int> original;
+
+    original.insert_head(11);
+    original.insert_head(10);
+    linked_list<int> move;
+
+    move.insert_head(9);
+
+    move = std::move(original);
+
+    EXPECT_EQ(move.head->data,10); 
+}
+
