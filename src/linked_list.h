@@ -19,18 +19,21 @@ private:
 
         ~Node() {}
     };
+
+ 
+    
     
 public:
     Node* head;
 
     linked_list();
     
-
     void insert_head(T value);  
     void insert(int position, T value);
     void insert_tail(T value);
     T get(int position);
     void remove(int position);
+    void ForEach(std::function<void(T&)>);
 
 
     linked_list(const linked_list<T>& other);
@@ -221,4 +224,15 @@ linked_list<T>& linked_list<T>::operator=(linked_list<T>&& other)
     std::swap(other.head,this->head);
 
     return *this;
+}
+
+template <typename T>
+void linked_list<T>::ForEach(std::function<void(T&)> some_func)
+{
+    Node* current = head;
+    while (current != nullptr)
+    {
+        some_func(current->data);
+        current = current->next_address;
+    }
 }

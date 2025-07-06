@@ -120,3 +120,36 @@ TEST(list,move_operator)
     EXPECT_EQ(move.head->data,10); 
 }
 
+TEST(list,lambda)
+{
+    linked_list<int> original;
+
+    original.insert_head(12);
+    original.insert_head(11);
+    original.insert_head(10);
+
+    original.ForEach([](int& x){x = x * x;});
+
+    EXPECT_EQ(original.head->data,100);
+    EXPECT_EQ(original.head->next_address->data,121);
+    EXPECT_EQ(original.head->next_address->next_address->data,144);
+
+
+}
+
+TEST(list,lambda_2)
+{
+    linked_list<int> original;
+
+    original.insert_head(12);
+    original.insert_head(11);
+    original.insert_head(10);
+
+    original.ForEach([](int& x){x = x - 1;});
+
+    EXPECT_EQ(original.head->data,9);
+    EXPECT_EQ(original.head->next_address->data,10);
+    EXPECT_EQ(original.head->next_address->next_address->data,11);
+
+
+}
