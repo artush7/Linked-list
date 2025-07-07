@@ -205,7 +205,16 @@ linked_list<T>& linked_list<T>::operator=(const linked_list<T>& other)
         return *this;
     }
 
+    Node* current = this->head;
+    while (current != nullptr)
+    {
+        Node* next = current->next_address;
+        delete current;
+        current = next;
+    }
 
+    head = nullptr;
+    
     this->head = new Node(other.head->data);
 
     Node* next_other = other.head->next_address;
