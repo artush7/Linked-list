@@ -5,8 +5,8 @@ TEST(list,head)
 {
     linked_list<int> lst;
     lst.insert_head(5);
-    auto head = lst.get_head();
-    EXPECT_EQ(head->data,5);
+
+    EXPECT_EQ(lst.get(0),5);
 }
 
  TEST(list,head_1)
@@ -15,9 +15,8 @@ TEST(list,head)
      lst.insert_head(6.7);
      lst.insert_head(5.7);
 
-     auto head = lst.get_head();
-     EXPECT_EQ(head->next_address->data,6.7);
-     EXPECT_EQ(head->data,5.7);
+     EXPECT_EQ(lst.get(1),6.7);
+     EXPECT_EQ(lst.get(0),5.7);
  }
 
 TEST(list,insert)
@@ -27,11 +26,10 @@ TEST(list,insert)
     lst.insert(1, 20);
     lst.insert(1, 15);
 
-    auto head = lst.get_head();
 
-    EXPECT_EQ(head->data, 10);
-    EXPECT_EQ(head->next_address->data, 15);
-    EXPECT_EQ(head->next_address->next_address->data, 20);
+    EXPECT_EQ(lst.get(0), 10);
+    EXPECT_EQ(lst.get(1), 15);
+    EXPECT_EQ(lst.get(2), 20);
 
 }
 
@@ -41,10 +39,8 @@ TEST(list,insert_tail)
     lst.insert_tail(1.5);
     lst.insert_tail(2.5);
 
-    auto head = lst.get_head();
-
-    EXPECT_EQ(head->data,1.5);
-    EXPECT_EQ(head->next_address->data,2.5);
+    EXPECT_EQ(lst.get(0),1.5);
+    EXPECT_EQ(lst.get(1),2.5);
 }
 
 TEST(list,get)
@@ -77,15 +73,13 @@ TEST(list,copy_constructor)
 
     linked_list<int> lst1(lst);
 
-    auto head = lst1.get_head();
 
-    EXPECT_EQ(head->data,4);
-    EXPECT_EQ(head->next_address->data,5);
+    EXPECT_EQ(lst1.get(0),4);
+    EXPECT_EQ(lst1.get(1),5);
 
-    auto head1 = lst.get_head();
 
-    head1->data = 999;
-    EXPECT_EQ(head->data, 4); 
+    lst.insert(0,999);
+    EXPECT_EQ(lst1.get(0), 4); 
     
 }
 
@@ -103,8 +97,8 @@ TEST(list,copy_operator)
 
 
     original = copy;
-    auto head_o = original.get_head();
-    EXPECT_EQ(head_o->data, 10); 
+
+    EXPECT_EQ(original.get(0), 10); 
 
 }
 
@@ -116,8 +110,7 @@ TEST(list,move_constructor)
 
     linked_list<int> move(std::move(original));
 
-    auto head = move.get_head();
-    EXPECT_EQ(head->data, 10); 
+    EXPECT_EQ(move.get(0), 10); 
 
 }
 
@@ -127,13 +120,14 @@ TEST(list,move_operator)
 
     original.insert_head(11);
     original.insert_head(10);
+
     linked_list<int> move;
 
     move.insert_head(9);
 
     move = std::move(original);
-    auto head = move.get_head();
-    EXPECT_EQ(head->data,10); 
+
+    EXPECT_EQ(move.get(0), 10); 
 }
 
 TEST(list,lambda)
@@ -146,11 +140,9 @@ TEST(list,lambda)
 
     original.ForEach([](int& x){x = x * x;});
 
-        auto head = original.get_head();
-
-    EXPECT_EQ(head->data,100);
-    EXPECT_EQ(head->next_address->data,121);
-    EXPECT_EQ(head->next_address->next_address->data,144);
+    EXPECT_EQ(original.get(0), 100);
+    EXPECT_EQ(original.get(1),121);
+    EXPECT_EQ(original.get(2),144);
 
 
 }
@@ -165,11 +157,10 @@ TEST(list,lambda_2)
 
     original.ForEach([](int& x){x = x - 1;});
 
-    auto head = original.get_head();
 
-    EXPECT_EQ(head->data,9);
-    EXPECT_EQ(head->next_address->data,10);
-    EXPECT_EQ(head->next_address->next_address->data,11);
+    EXPECT_EQ(original.get(0),9);
+    EXPECT_EQ(original.get(1),10);
+    EXPECT_EQ(original.get(2),11);
 
 
 }

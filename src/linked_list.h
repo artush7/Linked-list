@@ -33,8 +33,6 @@ public:
     T get(int position);
     void remove(int position);
     void ForEach(std::function<void(T&)>);
-    Node* get_head() const;
-
 
     linked_list(const linked_list<T>& other);
     linked_list<T>& operator=(const linked_list<T>& other);
@@ -255,8 +253,3 @@ void linked_list<T>::ForEach(std::function<void(T&)> some_func)
     }
 }
 
-template <typename T>
-typename linked_list<T>::Node* linked_list<T>::get_head() const
-{
-    return head;
-}
