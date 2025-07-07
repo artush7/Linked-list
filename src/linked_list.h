@@ -1,4 +1,4 @@
-
+#include <stdexcept>
 template <typename T>
 class linked_list
 {
@@ -20,11 +20,10 @@ private:
         ~Node() {}
     };
 
- 
-    
+    Node* head;
     
 public:
-    Node* head;
+    
 
     linked_list();
     
@@ -34,6 +33,7 @@ public:
     T get(int position);
     void remove(int position);
     void ForEach(std::function<void(T&)>);
+    Node* get_head() const;
 
 
     linked_list(const linked_list<T>& other);
@@ -70,8 +70,17 @@ void linked_list<T>::insert(int position, T value)
     Node* current = head;
     for(int i = 0;i < position - 1;++i)
     {   
-        if (current == nullptr) return;
+        if (current == nullptr)
+        {
+            throw std::out_of_range("Position is out of range in insert()");
+        }
+         
         current = current->next_address;
+    }
+
+    if (current == nullptr) 
+    {
+        throw std::out_of_range("position out of range (after loop) in insert()");
     }
 
     Node* new_node = new Node(value);
@@ -109,13 +118,13 @@ T linked_list<T>::get(int position)
     {
         if (current == nullptr)
         {
-            return T();
+            throw std::out_of_range("Position is out of range in get()");
         }
         current = current->next_address;
     }
     if (current == nullptr)
     {
-        return T();
+        throw std::out_of_range("position out of range (after loop) in get()");
     }
     return current->data;
 }
@@ -125,6 +134,9 @@ void linked_list<T>::remove(int position)
 {
     if (position == 0)
     {
+        if (head == nullptr)
+            throw std::out_of_range("Cannot remove empty list");
+        
         Node* temporary_head = head;
         head = head->next_address;
         delete temporary_head;
@@ -134,13 +146,19 @@ void linked_list<T>::remove(int position)
     Node* current = head;
     for (int i = 0;i < position - 1; ++i)
     {
-        if (current == nullptr) return;
+        if (current == nullptr) 
+            throw std::out_of_range("Position is out of range in remove()");
+
         current = current->next_address;
     }
 
+    if (current == nullptr) 
+        throw std::out_of_range("position out of range (after loop) in remove()");
+
     Node* temporary_node = current->next_address;
-    if (temporary_node == nullptr)
-        return;
+
+    if (temporary_node == nullptr) 
+        throw std::out_of_range("cannot remove:position is beyond list size");
 
     current->next_address = temporary_node->next_address;
     delete temporary_node;
@@ -235,4 +253,10 @@ void linked_list<T>::ForEach(std::function<void(T&)> some_func)
         some_func(current->data);
         current = current->next_address;
     }
+}
+
+template <typename T>
+typename linked_list<T>::Node* linked_list<T>::get_head() const
+{
+    return head;
 }
