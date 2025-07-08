@@ -206,8 +206,6 @@ linked_list<T>& linked_list<T>::operator=(const linked_list<T>& other)
         return *this;
     }
 
-    this->~linked_list();
-    
     linked_list<T> tmp(other);
 
     std::swap(this->head,tmp.head);
