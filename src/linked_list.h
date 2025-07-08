@@ -215,17 +215,9 @@ linked_list<T>& linked_list<T>::operator=(const linked_list<T>& other)
 
     head = nullptr;
     
-    this->head = new Node(other.head->data);
+    linked_list<T> tmp(other);
 
-    Node* next_other = other.head->next_address;
-    Node* this_head = head;
-
-    while (next_other != nullptr)
-    {
-        this_head->next_address = new Node(next_other->data);
-        this_head = this_head->next_address;
-        next_other = next_other->next_address;
-    }
+    std::swap(this->head,tmp.head);
 
     return *this;
 }
