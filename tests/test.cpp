@@ -218,3 +218,66 @@ TEST(list,exception_remove_2)
 
     EXPECT_THROW({original.remove(2);},std::out_of_range);
 }
+
+TEST(list,iterator)
+{
+    linked_list<int> original;
+
+    original.insert_head(12);
+    original.insert_head(11);
+    original.insert_head(10); 
+
+    auto it = original.begin();
+    EXPECT_EQ(*it,10);
+}
+
+TEST(list,iterator_1)
+{
+    linked_list<int> original;
+
+    original.insert_head(12);
+    original.insert_head(11);
+    original.insert_head(10); 
+
+    auto it = original.begin();
+    ++it;
+    EXPECT_EQ(*it,11);
+}
+
+TEST(list,iterator_2)
+{
+    linked_list<int> original;
+
+    original.insert_head(12);
+    original.insert_head(11);
+    original.insert_head(10); 
+
+    auto it = original.begin();
+
+    ++it;
+    ++it;
+    ++it;
+
+    EXPECT_EQ(it,original.end());
+}
+
+TEST(list,iterator_3)
+{
+    linked_list<int> original;
+
+    original.insert_head(12);
+    original.insert_head(11);
+    original.insert_head(10); 
+
+    auto it = original.begin();
+
+    EXPECT_EQ(*it,10);
+    ++it;
+    EXPECT_EQ(*it,11);
+    ++it;
+    EXPECT_EQ(*it,12);
+    ++it;
+
+    EXPECT_EQ(it,original.end());
+}
+

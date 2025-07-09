@@ -14,18 +14,33 @@ private:
         Node* next_address;
         T data;
 
-        Node(T data)
-        {
-            this->next_address = nullptr;
-            this->data = data;
-        }
+        Node(T data);
     };
 
     Node* head;
     
 public:
-    
 
+    class Iterator
+    { 
+    private:
+        Node* head_it;
+    public:
+        using difference_type = std::ptrdiff_t;
+        using value_type = std::remove_cv_t<T>;
+        using pointer = T*;
+        using reference = T&;
+        using iterator_category = std::forward_iterator_tag;
+        using iterator_concept = std::forward_iterator_tag;
+
+        Iterator(Node* head);
+        T& operator*() const;
+        Iterator operator++();
+        bool operator!=(const Iterator& other) const;
+        bool operator==(const Iterator& other) const;
+
+    };
+    
     linked_list();
     
     void insert_head(T value);  
@@ -41,16 +56,10 @@ public:
     linked_list<T>& operator=(linked_list<T>&& other);
     ~linked_list();
 
-    class Iterator
-    {  
-    public:
-        using difference_type = std::ptrdiff_t;
-        using value_type = std::remove_cv_t<T>;
-        using pointer = T*;
-        using reference = T&;
-        using iterator_category = std::forward_iterator_tag;
-        using iterator_concept = std::forward_iterator_tag;
-    };
+    Iterator begin();
+    Iterator end();
+
+
 };
 
 
@@ -257,5 +266,54 @@ void linked_list<T>::ForEach(std::function<void(T&)> some_func)
     }
 }
 
+template <typename T>
+linked_list<T>::Node::Node(T data)
+{
+    this->next_address = nullptr;
+    this->data = data;
+}
 
+template <typename T>
+linked_list<T>::Iterator::Iterator(Node* head)
+{
+    head_it = head;
+}
+
+template <typename T>
+T& linked_list<T>::Iterator::operator*() const
+{
+    return head_it->data;
+}
+
+
+template <typename T>
+typename linked_list<T>::Iterator linked_list<T>::begin()
+{
+    return Iterator(head);
+}
+
+template <typename T>
+typename linked_list<T>::Iterator linked_list<T>::Iterator::operator++()
+{
+    head_it = head_it->next_address;
+    return *this;
+}
+
+template <typename T>
+typename linked_list<T>::Iterator linked_list<T>::end()
+{   
+    return Iterator(nullptr);
+}
+
+template <typename T>
+bool linked_list<T>::Iterator::operator!=(const Iterator& other) const
+{
+    return head_it != other.head_it;
+}
+
+template <typename T>
+bool linked_list<T>::Iterator::operator==(const Iterator& other) const
+{
+    return head_it == other.head_it;
+}
 
