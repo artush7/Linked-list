@@ -1,4 +1,8 @@
 #include <stdexcept>
+#include <iterator>
+#include <cstddef>
+#include <functional>
+
 template <typename T>
 class linked_list
 {
@@ -10,14 +14,11 @@ private:
         Node* next_address;
         T data;
 
-        
         Node(T data)
         {
             this->next_address = nullptr;
             this->data = data;
         }
-
-        ~Node() {}
     };
 
     Node* head;
@@ -39,6 +40,17 @@ public:
     linked_list(linked_list<T>&& other);
     linked_list<T>& operator=(linked_list<T>&& other);
     ~linked_list();
+
+    class Iterator
+    {  
+    public:
+        using difference_type = std::ptrdiff_t;
+        using value_type = std::remove_cv_t<T>;
+        using pointer = T*;
+        using reference = T&;
+        using iterator_category = std::forward_iterator_tag;
+        using iterator_concept = std::forward_iterator_tag;
+    };
 };
 
 
@@ -244,4 +256,6 @@ void linked_list<T>::ForEach(std::function<void(T&)> some_func)
         current = current->next_address;
     }
 }
+
+
 
