@@ -240,7 +240,7 @@ TEST(list,iterator_1)
     original.insert_head(10); 
 
     auto it = original.begin();
-    ++it;
+    it++;
     EXPECT_EQ(*it,11);
 }
 
@@ -254,9 +254,9 @@ TEST(list,iterator_2)
 
     auto it = original.begin();
 
-    ++it;
-    ++it;
-    ++it;
+    it++;
+    it++;
+    it++;
 
     EXPECT_EQ(it,original.end());
 }
@@ -272,12 +272,81 @@ TEST(list,iterator_3)
     auto it = original.begin();
 
     EXPECT_EQ(*it,10);
-    ++it;
+    it++;
     EXPECT_EQ(*it,11);
-    ++it;
+    it++;
     EXPECT_EQ(*it,12);
-    ++it;
+    it++;
 
     EXPECT_EQ(it,original.end());
+}
+
+TEST(list,iterato_find)
+{
+    linked_list<int> lst;
+
+    lst.insert_head(12);
+    lst.insert_head(11);
+    lst.insert_head(10); 
+
+    auto it = std::find(lst.begin(),lst.end(),11);
+    EXPECT_EQ(*it,11);
+
+    auto it1 = std::find(lst.begin(),lst.end(),20);
+    EXPECT_EQ(it1,lst.end());
+}
+
+TEST(list,iterato_distance)
+{
+    linked_list<int> lst;
+
+    lst.insert_head(12);
+    lst.insert_head(11);
+    lst.insert_head(10);
+
+    auto d = std::distance(lst.begin(),lst.end());
+    EXPECT_EQ(d,3);
+}
+
+TEST(list,iterato_copy)
+{
+    linked_list<int> lst;
+
+    lst.insert_head(12);
+    lst.insert_head(11);
+    lst.insert_head(10);
+
+    auto out_it = std::ostream_iterator<int>(std::cout," ");
+    std::copy(lst.begin(),lst.end(),out_it);
+    std::cout << std::endl;
+}
+
+
+
+TEST(list,throw_2)
+{
+    linked_list<int> lst;
+    auto it = lst.end();
+
+    EXPECT_THROW({*it;},std::logic_error);
+
+}
+
+TEST(list,throw_3)
+{
+    linked_list<int> lst;
+    auto it = lst.end();
+
+    EXPECT_THROW({it++;},std::logic_error);
+
+}
+
+TEST(list,throw_4)
+{
+    linked_list<int> lst;
+    auto it = lst.end();
+
+    EXPECT_THROW({++it;},std::logic_error);
+
 }
 

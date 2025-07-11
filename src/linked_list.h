@@ -2,6 +2,8 @@
 #include <iterator>
 #include <cstddef>
 #include <functional>
+#include <algorithm>
+#include <iostream>
 
 template <typename T>
 class linked_list
@@ -35,6 +37,7 @@ public:
 
         Iterator(Node* head);
         T& operator*() const;
+        Iterator operator++(int);
         Iterator operator++();
         bool operator!=(const Iterator& other) const;
         bool operator==(const Iterator& other) const;
@@ -275,13 +278,15 @@ linked_list<T>::Node::Node(T data)
 
 template <typename T>
 linked_list<T>::Iterator::Iterator(Node* head)
-{
+{      
     head_it = head;
 }
 
 template <typename T>
 T& linked_list<T>::Iterator::operator*() const
-{
+{   
+    if (head_it == nullptr)
+        throw std::logic_error("cannot dereference end()");
     return head_it->data;
 }
 
@@ -293,8 +298,10 @@ typename linked_list<T>::Iterator linked_list<T>::begin()
 }
 
 template <typename T>
-typename linked_list<T>::Iterator linked_list<T>::Iterator::operator++()
+typename linked_list<T>::Iterator linked_list<T>::Iterator::operator++(int)
 {
+    if (head_it == nullptr)
+        throw std::logic_error("cannot increment end()");
     head_it = head_it->next_address;
     return *this;
 }
@@ -315,5 +322,14 @@ template <typename T>
 bool linked_list<T>::Iterator::operator==(const Iterator& other) const
 {
     return head_it == other.head_it;
+}
+
+template <typename T>
+typename linked_list<T>::Iterator linked_list<T>::Iterator::operator++()
+{
+    if (head_it == nullptr)
+        throw std::logic_error("cannot increment end()");
+    head_it = head_it->next_address;
+    return *this;
 }
 
